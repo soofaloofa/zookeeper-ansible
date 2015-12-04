@@ -1,0 +1,10 @@
+---
+- name: Install Python
+  action: apt pkg={{ item }} state=latest
+  with_items:
+    - python-dev
+    - python-pip
+    - python-virtualenv
+
+- name: Update pip
+  action: pip name=pip state=latest

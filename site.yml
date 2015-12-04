@@ -1,0 +1,7 @@
+---
+- name: Install Zookeeper and Exhibitor
+  hosts: zk-servers
+  remote_user: root
+
+  roles:
+    - zookeeper
