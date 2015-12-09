@@ -1,10 +1,63 @@
 ---
-- name: Install Python
-  action: apt pkg={{ item }} state=latest
-  with_items:
-    - python-dev
-    - python-pip
-    - python-virtualenv
+- name: Install JDK
+  apt: name=openjdk-7-jre-headless state=present
 
-- name: Update pip
-  action: pip name=pip state=latest
+- name: Install wget
+  apt: name=wget state=present
+
+- name: Create Group
+  group: name={{zookeeper_group}} state=present
+
+- name: Create User
+  user: name={{zookeeper_user}} group={{zookeeper_group}} state=present
+
+- name: Download Zookeeper
+  get_url: url=http://mirror.csclub.uwaterloo.ca/apache/zookeeper/zookeeper-{{zookeeper_version}}/zookeeper-{{zookeeper_version}}.tar.gz dest=/tmp/zookeeper-{{zookeeper_version}}.tar.gz
+
+- name: Extract Zookeeper
+  unarchive: src=/tmp/zookeeper-{{zookeeper_version}}.tar.gz dest=/opt/ copy=no
+
+- name: Remove Existing Install
+  command: rm -rf {{ zookeeper_install_dir }}
+
+- name: Move Zookeeper Install Directory
+  command: mv -f /opt/zookeeper-{{zookeeper_version}} {{ zookeeper_install_dir }}
+
+- name: Create Data Directory
+  file: path={{zookeeper_install_dir}}/data owner={{zookeeper_user}} group={{zookeeper_group}} mode=0755 state=directory
+
+- name: Create Log Directory
+  file: path={{zookeeper_install_dir}}/log owner={{zookeeper_user}} group={{zookeeper_group}} mode=0755 state=directory
+
+- name: Set zoo.cfg
+  template: >
+    src=zoo.cfg.j2 
+    dest={{ zookeeper_install_dir }}/conf/zoo.cfg
+    owner={{ zookeeper_user }}
+    group={{ zookeeper_group }}
+
+- name: Set myid
+  template: >
+    src=myid.j2 
+    dest={{ zookeeper_install_dir }}/data/myid
+    owner={{ zookeeper_user }}
+    group={{ zookeeper_group }}
+
+- name: Update Permissions
+  file: >
+    path={{ zookeeper_install_dir }}
+    owner={{ zookeeper_user }}
+    group={{ zookeeper_group }}
+    recurse=yes
+    mode=0755
+    state=directory
+
+- name: Add supervisor config
+  template: >
+    src=zookeeper.conf.j2
+    dest=/etc/supervisor/conf.d/zookeeper.conf
+    owner={{ zookeeper_user }}
+    group={{ zookeeper_group }}
+
+- name: Restart supervisor
+  shell: supervisorctl reread && supervisorctl update

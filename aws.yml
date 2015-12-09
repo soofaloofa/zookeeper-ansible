@@ -1,0 +1,44 @@
+- name: Provisiong ec2 instances
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    - region: "us-east-1"
+    - image: "ami-60b6c60a"
+    - instance_type: "t2.micro"
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Provision a set of instances
+      ec2:
+        key_name: "{{ key_name }}"
+        group_id: "{{ group_id }}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ vpc_subnet_id }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ image }}"
+        wait: true
+        count: 3
+        assign_public_ip: yes
+        instance_tags:
+          monan: zookeeper
+      register: ec2
+
+    - name: Add instances to a host group
+      add_host: hostname={{ item.public_ip }} groupname=launched
+      with_items: ec2.instances
+
+    - name: Wait for SSH
+      pause: minutes=1
+
+- name: Configure launched instance
+  hosts: launched
+  user: ec2-user
+  sudo: True
+  gather_facts: True
+
+  roles:
+    - common
+    - supervisor
+    - zookeeper

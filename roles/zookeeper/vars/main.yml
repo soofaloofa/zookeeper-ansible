@@ -1,0 +1,9 @@
+---
+zookeeper_group: zookeeper
+zookeeper_user: zookeeper
+zookeeper_version: 3.4.7
+zookeeper_install_dir: /opt/zookeeper
+
+zookeeper_client_port: 2181
+zookeeper_leader_port: 2888
+zookeeper_election_port: 3888
