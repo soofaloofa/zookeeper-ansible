@@ -9,3 +9,4 @@
     - common
     - supervisor
     - zookeeper
+    - exhibitor

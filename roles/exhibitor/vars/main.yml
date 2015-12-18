@@ -1,0 +1,5 @@
+---
+exhibitor_group: zookeeper  # reuse user and group
+exhibitor_user: zookeeper
+exhibitor_version: 1.5.5
+exhibitor_install_dir: /opt/exhibitor/

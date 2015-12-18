@@ -2,3 +2,4 @@
 key_name: ... # AWS key pair from management console
 group_id: ... # Security group to launch under
 vpc_subnet_id: ... # Subnet id to launch under
+tags: ... # A list of instance tags to apply
