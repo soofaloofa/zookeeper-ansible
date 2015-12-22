@@ -25,7 +25,8 @@
     },
     {
       "type": "ansible-local",
-      "playbook_file": "provision.yml"
+      "playbook_file": "provision.yml",
+      "playbook_dir": "."
     }
   ]
 }
