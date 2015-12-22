@@ -1,8 +1,21 @@
 ---
+- name: Create Group
+  sudo: true
+  group: 
+    name: "{{exhibitor.group}}"
+    state: present
+
+- name: Create User
+  sudo: true
+  user: 
+    name: "{{exhibitor.user}}"
+    group: "{{exhibitor.group}}"
+    state: present
+
 - name: Create Directory
   sudo: true
   file: 
-    path: "{{ exhibitor.dir}}"
+    path: "{{exhibitor.dir}}"
     owner: "{{exhibitor.user}}"
     group: "{{exhibitor.group}}"
     mode: 0755 

@@ -1,5 +1,38 @@
 ---
-key_name: ... # AWS key pair from management console
-group_id: ... # Security group to launch under
-vpc_subnet_id: ... # Subnet id to launch under
-tags: ... # A list of instance tags to apply
+zookeeper:
+  version: 3.4.7
+  dir: /opt/zookeeper
+  data_dir: /opt/zookeeper/data
+  log_dir: /opt/zookeeper/log
+
+  client_port: 2181
+  leader_port: 2888
+  election_port: 3888
+
+  user: zookeeper
+  group: zookeeper
+
+exhibitor:
+  version: 1.5.5
+  dir: /opt/exhibitor
+  data_dir: /opt/exhibitor/data
+  log_dir: /opt/exhibitor/log
+
+  user: zookeeper
+  group: zookeeper
+
+  s3_bucket: "..."
+  s3_key: "..."
+
+aws:
+  image: "..."
+  key_name: "..."
+  group_id: "..."
+  vpc_subnet_id: "..." 
+  region: "us-west-2"
+  instance_type: "t2.micro"
+  instance_profile_name: "S3-Full"
+  count: 1
+  assign_public_ip: true
+  instance_tags:
+    service: zookeeper
