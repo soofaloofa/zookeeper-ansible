@@ -1,5 +1,6 @@
 ---
 - name: Create Directory
+  sudo: true
   file: 
     path: "{{ exhibitor.dir}}"
     owner: "{{exhibitor.user}}"
@@ -8,6 +9,7 @@
     state: directory
 
 - name: Create Data Directory
+  sudo: true
   file:
     path: "{{exhibitor.data_dir}}"
     owner: "{{exhibitor.user}}"
@@ -16,6 +18,7 @@
     state: directory
 
 - name: Copy Exhibitor JAR
+  sudo: true
   copy: 
     src: "exhibitor-{{exhibitor.version}}.jar"
     dest: "{{exhibitor.dir}}/exhibitor.jar"
@@ -23,13 +26,25 @@
     group: "{{exhibitor.group}}"
 
 - name: Set exhibitor.cfg
+  sudo: true
   template:
     src: exhibitor.cfg.j2 
     dest: "{{ exhibitor.dir }}/exhibitor.cfg"
     owner: "{{ exhibitor.user }}"
     group: "{{ exhibitor.group }}"
 
+- name: Update Permissions
+  sudo: true
+  file:
+    path: "{{ exhibitor.dir }}"
+    owner: "{{ exhibitor.user }}"
+    group: "{{ exhibitor.group }}"
+    recurse: yes
+    mode: 0755
+    state: directory
+
 - name: Add supervisor config
+  sudo: true
   template:
     src: supervisor.exhibitor.conf.j2
     dest: /etc/supervisor/conf.d/exhibitor.conf

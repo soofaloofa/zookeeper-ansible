@@ -3,9 +3,6 @@
   hosts: all
   vars_files:
     - vars.yml
-  remote_user: vagrant
-  user: root
-  sudo: true
 
   pre_tasks:
     - name: Install Required Packages

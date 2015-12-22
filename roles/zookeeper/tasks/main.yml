@@ -1,9 +1,16 @@
 ---
 - name: Create Group
-  group: name={{zookeeper.group}} state=present
+  sudo: true
+  group: 
+    name: "{{zookeeper.group}}"
+    state: present
 
 - name: Create User
-  user: name={{zookeeper.user}} group={{zookeeper.group}} state=present
+  sudo: true
+  user: 
+    name: "{{zookeeper.user}}"
+    group: "{{zookeeper.group}}"
+    state: present
 
 - name: Download Zookeeper
   get_url: 
@@ -11,18 +18,22 @@
     dest: /tmp/zookeeper-{{zookeeper.version}}.tar.gz
 
 - name: Extract Zookeeper
+  sudo: true
   unarchive:
     src: /tmp/zookeeper-{{zookeeper.version}}.tar.gz
     dest: /opt/
     copy: no
 
 - name: Remove Existing Install
+  sudo: true
   command: rm -rf "{{ zookeeper.dir }}"
 
 - name: Move Zookeeper Install Directory
+  sudo: true
   command: mv -f /opt/zookeeper-{{zookeeper.version}} "{{ zookeeper.dir }}"
 
 - name: Create Data Directory
+  sudo: true
   file: 
     path: "{{zookeeper.data_dir}}"
     owner: "{{zookeeper.user}}"
@@ -31,6 +42,7 @@
     state: directory
 
 - name: Create Log Directory
+  sudo: true
   file:
     path: "{{zookeeper.log_dir}}"
     owner: "{{zookeeper.user}}"
@@ -39,6 +51,7 @@
     state: directory
 
 - name: Update Permissions
+  sudo: true
   file:
     path: "{{ zookeeper.dir }}"
     owner: "{{ zookeeper.user }}"
@@ -48,6 +61,7 @@
     state: directory
 
 - name: Add supervisor config
+  sudo: true
   template:
     src: supervisor.zookeeper.conf.j2
     dest: /etc/supervisor/conf.d/zookeeper.conf
