@@ -1,5 +1,9 @@
 [program:exhibitor]
-command=java -jar {{exhibitor.dir}}/exhibitor.jar -c s3 --s3config {{exhibitor.s3_bucket}}:{{exhibitor.s3_key}} --defaultconfig {{exhibitor.dir}}/exhibitor.cfg
+{% if exhibitor.configtype == "s3" %}
+command=java -jar {{exhibitor.dir}}/exhibitor.jar --configtype s3 --s3config {{exhibitor.s3_bucket}}:{{exhibitor.s3_key}} --defaultconfig {{exhibitor.dir}}/exhibitor.cfg
+{% else %}
+command=java -jar {{exhibitor.dir}}/exhibitor.jar --configtype file --fsconfigdir {{exhibitor.fsconfigdir}} --defaultconfig {{exhibitor.dir}}/exhibitor.cfg
+{% endif %}
 user={{exhibitor.user}}
 autostart=true
 autorestart=true

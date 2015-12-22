@@ -30,6 +30,15 @@
     mode: 0755
     state: directory
 
+- name: Create Config Directory
+  sudo: true
+  file:
+    path: "{{exhibitor.fsconfigdir}}"
+    owner: "{{exhibitor.user}}"
+    group: "{{exhibitor.group}}"
+    mode: 0755
+    state: directory
+
 - name: Copy Exhibitor JAR
   sudo: true
   copy: 

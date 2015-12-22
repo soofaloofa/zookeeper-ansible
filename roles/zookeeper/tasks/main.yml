@@ -50,6 +50,22 @@
     mode: 0755
     state: directory
 
+- name: Set initial config
+  sudo: true
+  template:
+    src: zoo.cfg.j2
+    dest: "{{zookeeper.dir}}/conf/zoo.cfg"
+    owner: "{{ zookeeper.user }}"
+    group: "{{ zookeeper.group }}"
+
+- name: Set initial myid
+  sudo: true
+  template:
+    src: myid.j2
+    dest: "{{zookeeper.data_dir}}/myid"
+    owner: "{{ zookeeper.user }}"
+    group: "{{ zookeeper.group }}"
+
 - name: Update Permissions
   sudo: true
   file:
