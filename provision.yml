@@ -1,0 +1,33 @@
+---
+- name: Install Zookeeper and Exhibitor
+  hosts: all
+  vars_files:
+    - vars.yml
+  remote_user: vagrant
+  user: root
+  sudo: true
+
+  pre_tasks:
+    - name: Install Required Packages
+      sudo: true
+      apt:
+        update_cache: true
+        pkg: "{{ item }}"
+        state: present
+      with_items:
+        - wget
+        - supervisor
+        - openjdk-7-jre-headless
+
+  roles:
+    - zookeeper
+    - exhibitor
+
+  post_tasks:
+    - name: Reread supervisor
+      sudo: true
+      command: supervisorctl reread
+
+    - name: Update supervisor
+      sudo: true
+      command: supervisorctl update

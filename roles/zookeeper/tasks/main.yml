@@ -1,63 +1,55 @@
 ---
-- name: Install JDK
-  apt: name=openjdk-7-jre-headless state=present
-
-- name: Install wget
-  apt: name=wget state=present
-
 - name: Create Group
-  group: name={{zookeeper_group}} state=present
+  group: name={{zookeeper.group}} state=present
 
 - name: Create User
-  user: name={{zookeeper_user}} group={{zookeeper_group}} state=present
+  user: name={{zookeeper.user}} group={{zookeeper.group}} state=present
 
 - name: Download Zookeeper
-  get_url: url=http://mirror.csclub.uwaterloo.ca/apache/zookeeper/zookeeper-{{zookeeper_version}}/zookeeper-{{zookeeper_version}}.tar.gz dest=/tmp/zookeeper-{{zookeeper_version}}.tar.gz
+  get_url: 
+    url: http://mirror.csclub.uwaterloo.ca/apache/zookeeper/zookeeper-{{zookeeper.version}}/zookeeper-{{zookeeper.version}}.tar.gz
+    dest: /tmp/zookeeper-{{zookeeper.version}}.tar.gz
 
 - name: Extract Zookeeper
-  unarchive: src=/tmp/zookeeper-{{zookeeper_version}}.tar.gz dest=/opt/ copy=no
+  unarchive:
+    src: /tmp/zookeeper-{{zookeeper.version}}.tar.gz
+    dest: /opt/
+    copy: no
 
 - name: Remove Existing Install
-  command: rm -rf {{ zookeeper_install_dir }}
+  command: rm -rf "{{ zookeeper.dir }}"
 
 - name: Move Zookeeper Install Directory
-  command: mv -f /opt/zookeeper-{{zookeeper_version}} {{ zookeeper_install_dir }}
+  command: mv -f /opt/zookeeper-{{zookeeper.version}} "{{ zookeeper.dir }}"
 
 - name: Create Data Directory
-  file: path={{zookeeper_install_dir}}/data owner={{zookeeper_user}} group={{zookeeper_group}} mode=0755 state=directory
+  file: 
+    path: "{{zookeeper.data_dir}}"
+    owner: "{{zookeeper.user}}"
+    group: "{{zookeeper.group}}"
+    mode: 0755
+    state: directory
 
 - name: Create Log Directory
-  file: path={{zookeeper_install_dir}}/log owner={{zookeeper_user}} group={{zookeeper_group}} mode=0755 state=directory
-
-- name: Set zoo.cfg
-  template: >
-    src=zoo.cfg.j2 
-    dest={{ zookeeper_install_dir }}/conf/zoo.cfg
-    owner={{ zookeeper_user }}
-    group={{ zookeeper_group }}
-
-- name: Set myid
-  template: >
-    src=myid.j2 
-    dest={{ zookeeper_install_dir }}/data/myid
-    owner={{ zookeeper_user }}
-    group={{ zookeeper_group }}
+  file:
+    path: "{{zookeeper.log_dir}}"
+    owner: "{{zookeeper.user}}"
+    group: "{{zookeeper.group}}"
+    mode: 0755
+    state: directory
 
 - name: Update Permissions
-  file: >
-    path={{ zookeeper_install_dir }}
-    owner={{ zookeeper_user }}
-    group={{ zookeeper_group }}
-    recurse=yes
-    mode=0755
-    state=directory
+  file:
+    path: "{{ zookeeper.dir }}"
+    owner: "{{ zookeeper.user }}"
+    group: "{{ zookeeper.group }}"
+    recurse: yes
+    mode: 0755
+    state: directory
 
 - name: Add supervisor config
-  template: >
-    src=zookeeper.conf.j2
-    dest=/etc/supervisor/conf.d/zookeeper.conf
-    owner={{ zookeeper_user }}
-    group={{ zookeeper_group }}
-
-- name: Restart supervisor
-  shell: supervisorctl reread && supervisorctl update
+  template:
+    src: supervisor.zookeeper.conf.j2
+    dest: /etc/supervisor/conf.d/zookeeper.conf
+    owner: "{{ zookeeper.user }}"
+    group: "{{ zookeeper.group }}"

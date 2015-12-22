@@ -1,22 +1,37 @@
 ---
-- name: Install JDK
-  apt: name=openjdk-7-jre-headless state=present
-
 - name: Create Directory
-  file: path={{exhibitor_install_dir}} owner={{exhibitor_user}} group={{exhibitor_group}} mode=0755 state=directory
+  file: 
+    path: "{{ exhibitor.dir}}"
+    owner: "{{exhibitor.user}}"
+    group: "{{exhibitor.group}}"
+    mode: 0755 
+    state: directory
 
 - name: Create Data Directory
-  file: path={{exhibitor_install_dir}}/data owner={{exhibitor_user}} group={{exhibitor_group}} mode=0755 state=directory
+  file:
+    path: "{{exhibitor.data_dir}}"
+    owner: "{{exhibitor.user}}"
+    group: "{{exhibitor.group}}"
+    mode: 0755
+    state: directory
 
 - name: Copy Exhibitor JAR
-  copy: src=exhibitor-1.5.5.jar dest={{exhibitor_install_dir}}/exhibitor.jar owner={{exhibitor_group}} group={{exhibitor_group}}
+  copy: 
+    src: "exhibitor-{{exhibitor.version}}.jar"
+    dest: "{{exhibitor.dir}}/exhibitor.jar"
+    owner: "{{exhibitor.user}}"
+    group: "{{exhibitor.group}}"
+
+- name: Set exhibitor.cfg
+  template:
+    src: exhibitor.cfg.j2 
+    dest: "{{ exhibitor.dir }}/exhibitor.cfg"
+    owner: "{{ exhibitor.user }}"
+    group: "{{ exhibitor.group }}"
 
 - name: Add supervisor config
-  template: >
-    src=exhibitor.conf.j2
-    dest=/etc/supervisor/conf.d/exhibitor.conf
-    owner={{ exhibitor_user }}
-    group={{ exhibitor_group }}
-
-- name: Restart supervisor
-  shell: supervisorctl reread && supervisorctl update
+  template:
+    src: supervisor.exhibitor.conf.j2
+    dest: /etc/supervisor/conf.d/exhibitor.conf
+    owner: "{{ exhibitor.user }}"
+    group: "{{ exhibitor.group }}"

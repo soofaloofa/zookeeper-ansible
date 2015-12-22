@@ -13,6 +13,7 @@
         region: "{{ region }}"
         vpc_subnet_id: "{{ vpc_subnet_id }}"
         instance_type: "{{ instance_type }}"
+        instance_profile_name: "{{ instance_profile_name }}"
         image: "{{ image }}"
         wait: true
         count: "{{ cluster_size }}"

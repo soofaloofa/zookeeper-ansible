@@ -10,10 +10,13 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   config.vm.provision "ansible" do |ansible|
-    ansible.groups = {
-      "zookeeper_servers" => ["default"],
-    }
-    ansible.verbose = "v"
-    ansible.playbook = "site.yml"
+    ansible.playbook = "provision.yml"
+    ansible.verbose = true
+  end
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 512
+    vb.cpus = 1
   end
 end
+

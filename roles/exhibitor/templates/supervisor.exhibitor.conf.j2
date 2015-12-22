@@ -1,0 +1,11 @@
+[program:exhibitor]
+command=java -jar {{exhibitor.dir}}/exhibitor.jar -c s3 --s3config {{exhibitor.s3_bucket}}:{{exhibitor.s3_key}} --defaultconfig {{exhibitor.dir}}/exhibitor.cfg
+user={{exhibitor.user}}
+autostart=true
+autorestart=true
+startsecs=10
+startretries=999
+log_stdout=true
+log_stderr=true
+logfile_maxbytes=10MB
+logfile_backups=10
