@@ -1,18 +1,12 @@
 # zookeeper-ansible
 
-An ansible playbook for deploying a Zookeeper cluster to AWS.
+An ansible playbook for deploying a Zookeeper cluster to AWS. Typical workflow
+is to create an Amazon AMI using packer and ansible and then deploy that AMI using
+ansible.
 
 ## Start
 
 Edit vars.yml.example with your settings and place at vars.yml.
-
-## Local Vagrant VM
-
-To create a local virtual machine running Zookeeper, run:
-
-```bash
-vagrant up
-```
 
 ## Build an AMI
 
@@ -29,3 +23,12 @@ To deploy a built AMI to EC2.
 ```bash
 make deploy-ami
 ```
+
+## Local Testing
+
+You can test the provisioning workflow using Vagrant:
+
+```bash
+vagrant up
+```
+
