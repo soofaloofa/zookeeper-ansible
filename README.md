@@ -18,7 +18,8 @@ make build-ami
 
 ## Deploy an AMI
 
-To deploy a built AMI to EC2.
+To deploy a built AMI to EC2, edit vars.yml with your new AMI build by Packer
+and deploy.
 
 ```bash
 make deploy-ami
@@ -31,4 +32,3 @@ You can test the provisioning workflow using Vagrant:
 ```bash
 vagrant up
 ```
-

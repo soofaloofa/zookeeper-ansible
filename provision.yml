@@ -14,7 +14,7 @@
       with_items:
         - wget
         - supervisor
-        - openjdk-7-jre-headless
+        - openjdk-7-jdk
 
   roles:
     - zookeeper
