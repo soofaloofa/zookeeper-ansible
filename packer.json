@@ -1,7 +1,10 @@
 {
   "variables": {
     "aws_access_key": "",
-    "aws_secret_key": ""
+    "aws_secret_key": "",
+    "aws_subnet_id": "",
+    "aws_ami": "",
+    "aws_security_group_id": ""
   },
   "builders": [{
     "type": "amazon-ebs",
@@ -9,9 +12,12 @@
     "secret_key": "{{user `aws_secret_key`}}",
     "ami_name": "zookeeper {{timestamp}}",
     "instance_type": "t2.micro",
-    "region": "us-west-2",
-    "source_ami": "ami-5189a661",
-    "ssh_username": "ubuntu"
+    "region": "us-east-1",
+    "source_ami": "{{user `aws_ami`}}",
+    "subnet_id": "{{user `aws_subnet_id`}}",
+    "security_group_id": "{{user `aws_security_group_id`}}",
+    "ssh_username": "ubuntu",
+    "associate_public_ip_address": true
   }],
   "provisioners": [
     {
