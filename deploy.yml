@@ -2,7 +2,7 @@
   hosts: all
   gather_facts: False
   vars_files:
-    - vars.yml
+    - deploy_vars.yml
 
   tasks:
     - name: Provision a set of instances
@@ -13,7 +13,7 @@
         vpc_subnet_id: "{{ aws.vpc_subnet_id }}"
         instance_type: "{{ aws.instance_type }}"
         instance_profile_name: "{{ aws.instance_profile_name }}"
-        image: "{{ aws.image }}"
+        image: "{{ ami }}"
         count: "{{ aws.count }}"
         assign_public_ip: "{{ aws.assign_public_ip }}"
         instance_tags: "{{ aws.instance_tags }}"

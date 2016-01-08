@@ -2,7 +2,7 @@
 - name: Install Zookeeper and Exhibitor
   hosts: all
   vars_files:
-    - vars.yml
+    - provision_vars.yml
 
   pre_tasks:
     - name: Install Required Packages

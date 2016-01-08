@@ -1,4 +1,6 @@
 vars.yml
+deploy_vars.yml
+provision_vars.yml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
