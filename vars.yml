@@ -1,0 +1,32 @@
+---
+zookeeper:
+  version: 3.4.7
+  dir: /opt/zookeeper
+  data_dir: /opt/zookeeper/data
+  log_dir: /opt/zookeeper/log
+
+  client_port: 2181
+  leader_port: 2888
+  election_port: 3888
+
+  user: zookeeper
+  group: zookeeper
+
+exhibitor:
+  version: 1.5.5
+  dir: /opt/exhibitor
+  data_dir: /opt/exhibitor/data
+  log_dir: /opt/exhibitor/log
+
+  user: zookeeper
+  group: zookeeper
+
+  # One of file or s3
+  configtype: s3
+
+  # file configuration
+  fsconfigdir: /opt/exhibitor/conf
+
+  # s3 configuration
+  s3_bucket: "{{ s3_bucket }}"
+  s3_key: "{{ s3_key }}"
