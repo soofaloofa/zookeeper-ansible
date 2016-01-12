@@ -1,4 +1,5 @@
 vars.sh
+vars.sh.personal
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
