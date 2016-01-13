@@ -6,6 +6,7 @@
     "aws_subnet_id": "",
     "aws_security_group_id": "",
     "aws_region": "",
+    "hosts": "",
     "s3_bucket": "",
     "s3_key": ""
   },
@@ -35,7 +36,7 @@
     {
       "type": "ansible-local",
       "playbook_file": "provision.yml",
-      "extra_arguments": ["--extra-vars", "'s3_bucket={{user `s3_bucket`}} s3_key={{user `s3_key`}}'"],
+      "extra_arguments": ["--extra-vars", "'s3_bucket={{user `s3_bucket`}} s3_key={{user `s3_key`}} hosts={{user `hosts`}}'"],
       "playbook_dir": "."
     }
   ]

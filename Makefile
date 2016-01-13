@@ -1,5 +1,6 @@
 build-ami:
 	packer build \
+	-var 'hosts=all' \
 	-var 'aws_access_key=${AWS_ACCESS_KEY}' \
 	-var 'aws_secret_key=${AWS_SECRET_KEY}' \
 	-var 'aws_source_ami=${BUILD_SOURCE_AMI}' \
@@ -12,11 +13,18 @@ build-ami:
 
 deploy-ami:
 	aws ec2 run-instances \
+	--associate-public-ip-address \
 	--image-id ${DEPLOY_AMI} \
-	--count 1 \
-	--instance-type t2.micro \
-	--iam-instance-profile "Name=S3-Full" \
+	--instance-type m3.medium \
+	--iam-instance-profile "Name=S3andRDS_Full" \
 	--key-name ${DEPLOY_KEY_NAME} \
 	--security-group-ids ${DEPLOY_SG} \
 	--subnet-id ${DEPLOY_SUBNET_ID} \
 	--region ${DEPLOY_REGION}
+
+provision:
+	source vars.sh && ansible-playbook \
+	--user ubuntu \
+	--become-user root \
+	--extra-vars "hosts=tag_Service_Zookeeper s3_bucket=${BUILD_S3_BUCKET} s3_key=${BUILD_S3_KEY}" \
+	provision.yml
