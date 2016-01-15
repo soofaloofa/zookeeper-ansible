@@ -1,5 +1,5 @@
 build-ami:
-	packer build \
+	source vars.sh && packer build \
 	-var 'hosts=all' \
 	-var 'aws_access_key=${AWS_ACCESS_KEY}' \
 	-var 'aws_secret_key=${AWS_SECRET_KEY}' \
@@ -12,10 +12,11 @@ build-ami:
 	packer.json
 
 deploy-ami:
-	aws ec2 run-instances \
+	source vars.sh && aws ec2 run-instances \
 	--associate-public-ip-address \
-	--image-id ${DEPLOY_AMI} \
+	--image-id $(AMI) \
 	--instance-type m3.medium \
+	--count 3 \
 	--iam-instance-profile "Name=S3andRDS_Full" \
 	--key-name ${DEPLOY_KEY_NAME} \
 	--security-group-ids ${DEPLOY_SG} \
