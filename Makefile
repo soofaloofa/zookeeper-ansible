@@ -16,8 +16,7 @@ deploy-ami:
 	--associate-public-ip-address \
 	--image-id $(AMI) \
 	--instance-type m3.medium \
-	--count 3 \
-	--iam-instance-profile "Name=S3andRDS_Full" \
+	--iam-instance-profile "Name=S3-Full" \
 	--key-name ${DEPLOY_KEY_NAME} \
 	--security-group-ids ${DEPLOY_SG} \
 	--subnet-id ${DEPLOY_SUBNET_ID} \
