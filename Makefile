@@ -18,7 +18,7 @@ deploy-ami:
 	--instance-type m3.medium \
 	--iam-instance-profile "Name=${DEPLOY_ROLE}" \
 	--key-name ${DEPLOY_KEY_NAME} \
-	--security-group-ids ${DEPLOY_SG} \
+	--security-group-ids ${DEPLOY_SECURITY_GROUP} \
 	--subnet-id ${DEPLOY_SUBNET_ID} \
 	--region ${DEPLOY_REGION}
 
