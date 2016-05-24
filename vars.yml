@@ -1,6 +1,6 @@
 ---
 zookeeper:
-  version: 3.4.6
+  version: 3.4.8
   dir: /opt/zookeeper
   data_dir: /opt/zookeeper/data
   log_dir: /opt/zookeeper/log
@@ -13,7 +13,7 @@ zookeeper:
   group: zookeeper
 
 exhibitor:
-  version: 1.5.5
+  version: 1.5.6
   dir: /opt/exhibitor
   data_dir: /opt/exhibitor/data
   log_dir: /opt/exhibitor/log
